@@ -9,6 +9,12 @@ import AddEditProduct from "../Component/AddEditProduct";
 function ProductList() {
   const dispatch = useDispatch();
   const [editMode, seteditMode] = useState(false)
+
+  const [initialProducts, setinitialProducts] = useState(
+    localStorage.getItem("productList")
+      ? JSON.parse(localStorage.getItem("productList"))
+      : []
+  );
 //   const filters = useSelector(productfilter);
 
 const [openForm, setOpenForm] = useState(false)
@@ -26,6 +32,7 @@ const openAddForm = () => {
   const getproduct = async() => {
       try {
         const products = await dispatch(getInitialProductList())
+        console.log("products", products)
         localStorage.setItem("productList", JSON.stringify(products.payload.data.products))
       }catch(error){
         console.log("error", error)
@@ -33,7 +40,11 @@ const openAddForm = () => {
   }
 
   useEffect(() => {
-    getproduct()
+      // checks if initial product list is already loaded and set into local storage or not
+      if(initialProducts.length > 0){
+      }else {
+        getproduct()
+      }
   }, [])
   
   return (
@@ -56,7 +67,7 @@ const openAddForm = () => {
           open={openForm}
           onClose={closeAddForm}
         >
-            <AddEditProduct editMode={editMode} />
+            <AddEditProduct editMode={editMode} closeAddForm={closeAddForm} />
         </Modal>
   </div>
   )

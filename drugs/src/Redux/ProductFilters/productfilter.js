@@ -34,6 +34,23 @@ const productFilters = createSlice({
         state.status = "Failed";
         state.error = action;
       },
+
+      // TOOLKIT TO GET PRODUCTS AFTER MORE PRODUCTS HAS BEEN ADDED
+      [product.getProducts.pending]: (state) => {
+        state.loaded = false;
+        state.status = "Loading";
+      },
+      [product.getProducts.fulfilled]: (state, action) => {
+        state.data = action.meta.arg;
+        state.loaded = true;
+        state.status = "Loaded successfully";
+      },
+      [product.getProducts.rejected]: (state, action) => {
+        state.data = [];
+        state.loaded = false;
+        state.status = "Failed";
+        state.error = action;
+      },
     },
   });
   
