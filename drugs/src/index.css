@@ -4,6 +4,10 @@
 
 @layer components {
     .product-card {
-      @apply bg-white mx-auto border-blue-500 border-2 hover:shadow-lg hover:border-blue-800 transition ease-in-out delay-150 h-full grid grid-cols-3 gap-4  my-5 p-5 rounded-md;
+      @apply bg-white mx-auto border-blue-500 border-2 hover:shadow-lg hover:border-blue-800 transition ease-in-out delay-150 h-full grid grid-cols-3 gap-4  my-5 p-5 rounded-md even:bg-gray-100 odd:bg-white;
+    }
+
+    .table-head{
+        @apply grid grid-cols-3 border-2 rounded-md border-blue-500 h-10 items-center;
     }
   }
