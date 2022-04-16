@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EditIcon from "./Icons/EditIcon";
 import DeletIcon from "./Icons/DeleteIcon";
 import AddEditProduct from "./AddEditProduct";
 import { Modal } from "@nextui-org/react";
 import {productFiltersRuducer} from "../Redux/ProductFilters/productfilter"
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import DeleteProduct from "./DeleteProduct";
+import {getProducts} from "../Redux/ProductFilters/index"
 
 function Products({loading}) {
-
+    const dispatch = useDispatch();
     // declaring of the value that holds the data from the store
     const productLists = useSelector(productFiltersRuducer);
 
@@ -17,7 +19,7 @@ function Products({loading}) {
       ? JSON.parse(localStorage.getItem("productList"))
       : []
   );
-  const [openEditForm, setopenEditForm] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [editMode, seteditMode] = useState(false);
   const [editProduct, seteditProduct] = useState({});
   const [showDelete, setShowDelete] = useState(false);
@@ -28,7 +30,7 @@ function Products({loading}) {
 
     // open edit from modal
     const showEditForm = () => {
-        setopenEditForm(true);
+        setOpenModal(true);
         seteditMode(true);
       };
     
@@ -43,15 +45,21 @@ function Products({loading}) {
       };
     
       // close edit form modal
-      const closeEditForm = () => {
-        setopenEditForm(false);
+      const closeModal = () => {
+        setOpenModal(false);
       };
+
+      useEffect(() => {
+          // this is where we fetch all the products
+        dispatch(getProducts());
+      }, [])
+      
 
   return (
     <div>
       <div className="table-head">
         <div className="text-center">NAME</div>
-        <div className="text-center">PRICE HISTORY</div>
+        <div className="text-center">PRICE</div>
         <div className="text-center">ACTIONS</div>
       </div>
       {
@@ -79,7 +87,10 @@ function Products({loading}) {
                         >
                           <EditIcon />
                         </div>
-                        <div>
+                        <div onClick={() => {
+                            openDelete()
+                            seteditProduct(product);
+                        }}>
                           <DeletIcon />
                         </div>
                       </div>
@@ -95,10 +106,21 @@ function Products({loading}) {
         width="600px"
         closeButton
         aria-labelledby="modal-title"
-        open={openEditForm}
-        onClose={closeEditForm}
+        open={openModal}
+        onClose={closeModal}
       >
-        <AddEditProduct editMode={editMode} editProduct={editProduct} />
+        <AddEditProduct editMode={editMode} editProduct={editProduct} closeModal={closeModal} />
+      </Modal>
+
+      <Modal
+        preventClose
+        width="600px"
+        closeButton
+        aria-labelledby="modal-title"
+        open={showDelete}
+        onClose={closeDelete}
+      >
+        <DeleteProduct deleteId={editProduct.id} closeDelete={closeDelete}  />
       </Modal>
     </div>
   );

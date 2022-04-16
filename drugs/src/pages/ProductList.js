@@ -33,11 +33,10 @@ const openAddForm = () => {
       try {
         setloading(true)
         const products = await dispatch(getInitialProductList())
-        console.log("products", products)
         localStorage.setItem("productList", JSON.stringify(products.payload.data.products))
         setloading(false)
       }catch(error){
-        console.log("error", error)
+       alert("There was an error trying to fetch data. Please try again")
       }
   }
 
@@ -51,9 +50,9 @@ const openAddForm = () => {
   
   return (
     <div>
-    <div className="text-3xl font-bold text-gray-600 flex justify-center my-5">List Of Products</div>
+    <div className="text-3xl font-bold text-gray-600 flex justify-center">List Of Products</div>
 
-    <div className="flex md:justify-end justify-center mt-10 mb-10">
+    <div className="flex md:justify-end justify-center mt-5 mb-5">
           <button className="bg-blue-700 md:w-40 w-full ipad-pro:w-[32%] ipad:w-[32%] next-hub:w-[32%] rounded-lg h-10 text-white" onClick={openAddForm}>
             Add Product
           </button>

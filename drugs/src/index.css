@@ -10,4 +10,12 @@
     .table-head{
         @apply grid grid-cols-3 border-2 rounded-md border-blue-500 h-10 items-center;
     }
+
+    .delete-yes-button{
+        @apply bg-green-500 md:w-40 w-full rounded-lg h-10 text-white;
+    }
+
+    .delete-no-button{
+        @apply bg-red-600  md:w-40 w-full rounded-lg h-10 text-white;
+    }
   }

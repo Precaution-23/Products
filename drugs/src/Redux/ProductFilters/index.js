@@ -15,6 +15,11 @@ export const addProduct = createAsyncThunk(actions.ADD_PRODUCT, (data) => {
 
 
 // FUNCTION TO GET PRODUCTS TO THE DATABASE(LOCAL STORAGE)
-export const getProducts = createAsyncThunk(actions.ADD_PRODUCT, () => {
+export const getProducts = createAsyncThunk(actions.GET_PRODUCTS, () => {
     return JSON.parse(localStorage.getItem("productList"))
+})
+
+// FUNCTION TO GET PRODUCTS TO THE DATABASE(LOCAL STORAGE)
+export const getDeletedProducts = createAsyncThunk(actions.GET_DELETED_PRODUCT, () => {
+    return JSON.parse(localStorage.getItem("deletedProducts"))
 })
