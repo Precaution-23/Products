@@ -17,12 +17,15 @@ function AddEditProduct({editMode, editProduct, closeAddForm}) {
   // logic to add/edit mobile subscribers
   const addEditProduct = () => {
     if (editMode) {
-      //editMobileSubs();
+      editProductList()
     } else {
       addNewProduct();
     }
+
+    closeAddForm()
   };
 
+  // function to add new products
   const addNewProduct = async() => {
     try {
       
@@ -41,20 +44,53 @@ function AddEditProduct({editMode, editProduct, closeAddForm}) {
             ]
           }
         ];
+
+      // this is where the adding of new products happens
       await dispatch(addProduct(newProduct))
-      setTimeout(async() => {
-        await dispatch(getProducts())
-      }, 300)
+
+      // this is where we fetch all the products
+      await dispatch(getProducts())
     }catch(error){
-
+      alert("There was en error adding a new product. Try again")
     }
-
-    
-    // setpriceId(priceId + 1)
-    closeAddForm()
     window.location.reload()
-  
   } 
+
+
+  // function to edit product
+  const editProductList = async() => {
+    try{
+
+      const updateProduct = drugs.find((item) => item.id === editProduct.id)
+              //declaring an array to hold new product added by user
+              let updatedProduct =
+                {
+                  id: updateProduct.id,
+                  name: productName,
+                  prices: [
+                    ...updateProduct.prices,
+                    {
+                      id: updateProduct.prices.length + 1,
+                      date: moment().format(),
+                      price: productPrice
+                    }
+                  ]
+                }
+
+              drugs.splice(updateProduct.id - 1, 1, updatedProduct)
+              // this is where the adding of new products happens
+              await dispatch(addProduct(drugs))
+
+              // this is where we fetch all the products
+              await dispatch(getProducts())
+
+              // console.log("updatedProduct", drugs)
+
+    }catch(error) {
+      alert("There was en error editing a new product. Try again")
+    }
+    window.location.reload()
+  }
   return (
     <div>
     <Modal.Header>

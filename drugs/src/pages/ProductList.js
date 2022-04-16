@@ -9,7 +9,7 @@ import AddEditProduct from "../Component/AddEditProduct";
 function ProductList() {
   const dispatch = useDispatch();
   const [editMode, seteditMode] = useState(false)
-
+  const [loading, setloading] = useState(false)
   const [initialProducts, setinitialProducts] = useState(
     localStorage.getItem("productList")
       ? JSON.parse(localStorage.getItem("productList"))
@@ -31,9 +31,11 @@ const openAddForm = () => {
  // fetching of initial product lists
   const getproduct = async() => {
       try {
+        setloading(true)
         const products = await dispatch(getInitialProductList())
         console.log("products", products)
         localStorage.setItem("productList", JSON.stringify(products.payload.data.products))
+        setloading(false)
       }catch(error){
         console.log("error", error)
       }
@@ -57,7 +59,7 @@ const openAddForm = () => {
           </button>
         </div>
 
-    <Products />
+    <Products loading={loading} />
 
     <Modal
           preventClose
