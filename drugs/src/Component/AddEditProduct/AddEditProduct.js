@@ -120,7 +120,7 @@ function AddEditProduct({ editMode, editProduct }) {
       <Modal.Body>
         <div className="grid md:grid-cols-2 grid-cols-1 ">
           <div className="mx-1 mb-2">
-          <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
+          <span className="form-label">
             Name
           </span>
             <input
@@ -128,11 +128,11 @@ function AddEditProduct({ editMode, editProduct }) {
               required
               defaultValue={productName || ""}
               onChange={(e) => setproductName(e.target.value)}
-              className="w-full h-10 rounded-lg border-2 px-2 focus:outline-gray-400"
+              className="form-input"
             />
           </div>
           <div className="mx-1 mb-2">
-          <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
+          <span className="form-label">
             Price
           </span>
             <input
@@ -140,14 +140,14 @@ function AddEditProduct({ editMode, editProduct }) {
               required
               defaultValue={productPrice || ""}
               onChange={(e) => setproductPrice(e.target.value)}
-              className="w-full h-10 rounded-lg border-2 px-2 focus:outline-gray-400"
+              className="form-input"
             />
           </div>
         </div>
       </Modal.Body>
       <Modal.Footer>
         <button
-          className="bg-blue-700 md:w-40 w-full rounded-lg h-10 text-white"
+          className="add-edit-button"
           onClick={addEditProduct}
         >
           {editMode ? `Save` : `Add Product`}

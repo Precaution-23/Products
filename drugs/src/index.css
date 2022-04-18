@@ -18,4 +18,19 @@
     .delete-no-button{
         @apply bg-red-600  md:w-20 w-full rounded-lg h-10 text-white;
     }
+    .add-button{
+        @apply bg-blue-700 md:w-40 w-full ipad-pro:w-[32%] ipad:w-[32%] next-hub:w-[32%] rounded-lg h-10 text-white
+    }
+    .page-heading{
+        @apply text-3xl font-bold text-gray-600 flex justify-center;
+    }
+    .form-label{
+        @apply after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700;
+    }
+    .form-input{
+        @apply w-full h-10 rounded-lg border-2 px-2 focus:outline-gray-400;
+    }
+    .add-edit-button{
+        @apply bg-blue-700 md:w-40 w-full rounded-lg h-10 text-white
+    }
   }
