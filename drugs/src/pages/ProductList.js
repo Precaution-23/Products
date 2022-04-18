@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {getInitialProductList} from "../Redux/ProductFilters/index"
-import { productFiltersRuducer } from "../Redux/ProductFilters/productfilter";
-import Products from "../Component/Products";
+import Products from "../Component/Products/Products";
 import { Modal } from "@nextui-org/react";
-import AddEditProduct from "../Component/AddEditProduct";
+import AddEditProduct from "../Component/AddEditProduct/AddEditProduct";
 
 function ProductList() {
   const dispatch = useDispatch();
@@ -15,7 +14,6 @@ function ProductList() {
       ? JSON.parse(localStorage.getItem("productList"))
       : []
   );
-//   const filters = useSelector(productfilter);
 
 const [openForm, setOpenForm] = useState(false)
 
@@ -33,6 +31,7 @@ const openAddForm = () => {
       try {
         setloading(true)
         const products = await dispatch(getInitialProductList())
+        setinitialProducts(products.payload.data.products)
         localStorage.setItem("productList", JSON.stringify(products.payload.data.products))
         setloading(false)
       }catch(error){
@@ -58,7 +57,7 @@ const openAddForm = () => {
           </button>
         </div>
 
-    <Products loading={loading} />
+    <Products loading={loading} initialProducts={initialProducts}  />
 
     <Modal
           preventClose

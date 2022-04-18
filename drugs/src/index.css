@@ -12,10 +12,10 @@
     }
 
     .delete-yes-button{
-        @apply bg-green-500 md:w-40 w-full rounded-lg h-10 text-white;
+        @apply bg-green-500 md:w-20 w-full rounded-lg h-10 text-white;
     }
 
     .delete-no-button{
-        @apply bg-red-600  md:w-40 w-full rounded-lg h-10 text-white;
+        @apply bg-red-600  md:w-20 w-full rounded-lg h-10 text-white;
     }
   }

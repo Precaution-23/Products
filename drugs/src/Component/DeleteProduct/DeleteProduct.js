@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { productFiltersRuducer } from "../Redux/ProductFilters/productfilter";
+import { productFiltersRuducer } from "../../Redux/ProductFilters/productfilter";
 import {
   addProduct,
   getProducts,
-  getDeletedProducts,
-} from "../Redux/ProductFilters/index";
-import { useSelector, useDispatch } from "react-redux";
+} from "../../Redux/ProductFilters/index";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../Redux/ProductFilters/reduxHooks";
 
 function DeleteProduct({ deleteId, closeDelete }) {
-  const dispatch = useDispatch();
+  
+  const dispatch = useAppDispatch();
   // declaring of the value that holds the data from the store
   const productLists = useSelector(productFiltersRuducer);
 
   const [deletedProducts, setDeletedProducts] = useState([]);
-
-  let deletedItems = [];
 
   // get the deleted item to keep track of all deleted products
   const getDeletedItem = () => {
@@ -30,20 +29,21 @@ function DeleteProduct({ deleteId, closeDelete }) {
     localStorage.setItem("deletedItems", JSON.stringify(deletedItems));
   };
 
-//   console.log("deletedProducts", deletedProducts);
 
   // function to delete an item from the list
   const deleteProduct = () => {
+      // filter through the list of products and take the selected one out
     const getUnDeletedProduct = productLists.data.filter(
       (item) => item.id !== deleteId
     );
     dispatch(addProduct(getUnDeletedProduct));
-    // getDeletedItem();
     setTimeout(() => {
       dispatch(getProducts());
       closeDelete();
       window.location.reload();
     }, 300);
+
+    getDeletedItem()
   };
 
   useEffect(() => {
@@ -52,17 +52,17 @@ function DeleteProduct({ deleteId, closeDelete }) {
 
   return (
     <div>
-      <div className="flex justify-center text-xl">
+      <div data-testid="prompt"  className="flex justify-center text-xl">
         Are you sure you want to delete?
       </div>
       <div className="grid grid-cols-2 p-5">
         <div>
-          <button className="delete-yes-button" onClick={deleteProduct}>
+          <button data-testid="yesButton" className="delete-yes-button" onClick={deleteProduct}>
             YES
           </button>
         </div>
         <div>
-          <button className="delete-no-button" onClick={closeDelete}>
+          <button data-testid="noButton" className="delete-no-button" onClick={closeDelete}>
             NO
           </button>
         </div>
