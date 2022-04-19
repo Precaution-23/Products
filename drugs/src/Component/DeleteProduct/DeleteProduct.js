@@ -1,50 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { productFiltersRuducer } from "../../Redux/ProductFilters/productfilter";
-import {
-  addProduct,
-  getProducts,
-} from "../../Redux/ProductFilters/index";
-import { useSelector } from "react-redux";
+import { addProduct, getProducts } from "../../Redux/ProductFilters/index";
 import { useAppDispatch } from "../../Redux/ProductFilters/reduxHooks";
 
-function DeleteProduct({ deleteId, closeDelete }) {
-  
+function DeleteProduct({ editProduct, closeDelete }) {
   const dispatch = useAppDispatch();
-  // declaring of the value that holds the data from the store
-  const productLists = useSelector(productFiltersRuducer);
 
-  const [deletedProducts, setDeletedProducts] = useState([]);
+  const [drugs, setdrugs] = useState(
+    localStorage.getItem("productList")
+      ? JSON.parse(localStorage.getItem("productList"))
+      : []
+  );
 
-  // get the deleted item to keep track of all deleted products
+  // get the deleted item to update it rather than deleting where the name
+  // is set to empty string and price left intact
   const getDeletedItem = () => {
-    const deletedItem = productLists.data.filter(
-      (item) => item.id === deleteId
-    );
-    let deletedItems = [...deletedProducts, ...deletedItem];
+    try {
+      const updateProduct = drugs.find((item) => item.id === editProduct.id);
+      let updatedProduct = {
+        id: updateProduct.id,
+        name: "",
+        prices: [...updateProduct.prices],
+      };
 
-    // updating the deleted items state
-    setDeletedProducts(deletedItems);
+      // this is where decision is taken on where to slot the new updated data
+      drugs.splice(updateProduct.id - 1, 1, updatedProduct);
+      // this is where the adding of new products happens
+      dispatch(addProduct(drugs));
 
-    // console.log("deletedItems", deletedItems)
-    localStorage.setItem("deletedItems", JSON.stringify(deletedItems));
+      // this is where we fetch all the products
+      setTimeout(() => {
+        dispatch(getProducts());
+        closeDelete();
+        window.location.reload();
+      }, 300);
+    } catch (error) {
+      alert("There was en error deleting product. Try again");
+    }
   };
 
-
-  // function to delete an item from the list
-  const deleteProduct = () => {
-      // filter through the list of products and take the selected one out
-    const getUnDeletedProduct = productLists.data.filter(
-      (item) => item.id !== deleteId
-    );
-    dispatch(addProduct(getUnDeletedProduct));
-    setTimeout(() => {
-      dispatch(getProducts());
-      closeDelete();
-      window.location.reload();
-    }, 300);
-
-    getDeletedItem()
-  };
 
   useEffect(() => {
     dispatch(getProducts());
@@ -52,17 +45,25 @@ function DeleteProduct({ deleteId, closeDelete }) {
 
   return (
     <div>
-      <div data-testid="prompt"  className="flex justify-center text-xl">
+      <div data-testid="prompt" className="flex justify-center text-xl">
         Are you sure you want to delete?
       </div>
       <div className="grid grid-cols-2 p-5">
         <div>
-          <button data-testid="yesButton" className="delete-yes-button" onClick={deleteProduct}>
+          <button
+            data-testid="yesButton"
+            className="delete-yes-button"
+            onClick={getDeletedItem}
+          >
             YES
           </button>
         </div>
         <div>
-          <button data-testid="noButton" className="delete-no-button" onClick={closeDelete}>
+          <button
+            data-testid="noButton"
+            className="delete-no-button"
+            onClick={closeDelete}
+          >
             NO
           </button>
         </div>

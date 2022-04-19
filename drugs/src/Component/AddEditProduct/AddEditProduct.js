@@ -15,7 +15,7 @@ function AddEditProduct({ editMode, editProduct }) {
     editProduct?.name === "" ? "" : editProduct?.name
   );
   const [productPrice, setproductPrice] = useState(
-    editProduct?.prices?.length > 0 ? editProduct?.prices[0]?.price : ""
+    editProduct?.prices?.length > 0 ? editProduct?.prices.slice(-1).pop().price : ""
   );
   const [priceId, setpriceId] = useState(7);
 

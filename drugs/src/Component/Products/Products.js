@@ -61,34 +61,40 @@ function Products({ loading, initialProducts }) {
       ) : (
         productToDisplay?.map((product, index) => {
           return (
-            <div className="product-card" key={index}>
-              <div className="text-center">{product.name}</div>
-              <div className="flex flex-col">
-                <div className="text-center" key={index}>
-                  {product.prices.slice(-1).pop().price}{" "}
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="flex justify-evenly">
-                  <div
-                    onClick={() => {
-                      showEditForm();
-                      seteditProduct(product);
-                    }}
-                  >
-                    <EditIcon />
+            <>
+              {product.name !== "" ? (
+                <div className="product-card" key={index}>
+                  <div className="text-center">{product.name}</div>
+                  <div className="flex flex-col">
+                    <div className="text-center" key={index}>
+                      {product.prices.slice(-1).pop().price}{" "}
+                    </div>
                   </div>
-                  <div
-                    onClick={() => {
-                      openDelete();
-                      seteditProduct(product);
-                    }}
-                  >
-                    <DeletIcon />
+                  <div className="text-center">
+                    <div className="flex justify-evenly">
+                      <div
+                        onClick={() => {
+                          showEditForm();
+                          seteditProduct(product);
+                        }}
+                      >
+                        <EditIcon />
+                      </div>
+                      <div
+                        onClick={() => {
+                          openDelete();
+                          seteditProduct(product);
+                        }}
+                      >
+                        <DeletIcon />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              ) : (
+                ``
+              )}
+            </>
           );
         })
       )}
@@ -116,7 +122,7 @@ function Products({ loading, initialProducts }) {
         open={showDelete}
         onClose={closeDelete}
       >
-        <DeleteProduct deleteId={editProduct.id} closeDelete={closeDelete} />
+        <DeleteProduct editProduct={editProduct} closeDelete={closeDelete} />
       </Modal>
     </div>
   );
