@@ -7,6 +7,7 @@ import { productFiltersRuducer } from "../../Redux/ProductFilters/productfilter"
 import { useSelector, useDispatch } from "react-redux";
 import DeleteProduct from "../DeleteProduct/DeleteProduct";
 import { getProducts } from "../../Redux/ProductFilters/index";
+import { Pagination } from "@nextui-org/react";
 
 function Products({ loading, initialProducts }) {
   const dispatch = useDispatch();
@@ -17,6 +18,9 @@ function Products({ loading, initialProducts }) {
   const [editMode, seteditMode] = useState(false);
   const [editProduct, seteditProduct] = useState({});
   const [showDelete, setShowDelete] = useState(false);
+  const [firstsliceValue, setfirstsliceValue] = useState(0);
+  const [secondSliceValue, setsecondSliceValue] = useState(10);
+  const [pageNumber, setpageNumber] = useState(1);
 
   // run checks to see if store has data to display or it should display
   // the initial products before new products are added
@@ -44,6 +48,13 @@ function Products({ loading, initialProducts }) {
     setOpenModal(false);
   };
 
+  // logic for pagination
+  const handlePageChange = (value) => {
+    setpageNumber(value);
+    setfirstsliceValue(10 * value - 9);
+    setsecondSliceValue(10 * value);
+  };
+
   useEffect(() => {
     // this is where we fetch all the products
     dispatch(getProducts());
@@ -59,7 +70,7 @@ function Products({ loading, initialProducts }) {
       {loading ? (
         <div className="flex justify-center text-xl my-5">Loading...</div>
       ) : (
-        productToDisplay?.map((product, index) => {
+        productToDisplay?.slice(firstsliceValue, secondSliceValue).map((product, index) => {
           return (
             <>
               {product.name !== "" ? (
@@ -97,6 +108,21 @@ function Products({ loading, initialProducts }) {
             </>
           );
         })
+      )}
+
+      {productToDisplay.length < 1 || productToDisplay.length < 11 ? (
+        ``
+      ) : (
+        <div className="flex justify-center mt-10">
+          <Pagination
+            total={
+              parseInt(productToDisplay.length / 10) +
+              (productToDisplay.length % 10 > 0 ? 1 : 0)
+            }
+            page={pageNumber}
+            onChange={handlePageChange}
+          />
+        </div>
       )}
 
       <Modal
